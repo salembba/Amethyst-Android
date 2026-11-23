@@ -35,6 +35,7 @@ public class PojavApplication extends Application {
 			boolean storagePermAllowed = (Build.VERSION.SDK_INT < 23 || Build.VERSION.SDK_INT >= 29 ||
 					ActivityCompat.checkSelfPermission(PojavApplication.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && Tools.checkStorageRoot(PojavApplication.this);
 			File crashFile = new File(storagePermAllowed ? Tools.DIR_GAME_HOME : Tools.DIR_DATA, "latestcrash.txt");
+			String fullCrashDetails = "Thread: " + thread.getName() + "\n" + Log.getStackTraceString(th);
 			try {
 				// Write to file, since some devices may not able to show error
 				FileUtils.ensureParentDirectory(crashFile);
@@ -51,6 +52,14 @@ public class PojavApplication extends Application {
 				Log.e(CRASH_REPORT_TAG, " - Exception attempt saving crash stack trace:", throwable);
 				Log.e(CRASH_REPORT_TAG, " - The crash stack trace was:", th);
 			}
+
+			Log.e(CRASH_REPORT_TAG, fullCrashDetails);
+			try {
+				ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+				if (clipboard != null) {
+					clipboard.setPrimaryClip(ClipData.newPlainText("Amethyst Crash", fullCrashDetails));
+				}
+			} catch (Throwable ignored) {}
 
 			FatalErrorActivity.showError(PojavApplication.this, crashFile.getAbsolutePath(), storagePermAllowed, th);
 			Tools.fullyExit();

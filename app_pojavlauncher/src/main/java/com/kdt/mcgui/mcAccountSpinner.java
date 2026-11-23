@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -28,7 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.core.content.res.ResourcesCompat;
-
 
 import net.kdt.pojavlaunch.PojavProfile;
 import net.kdt.pojavlaunch.R;
@@ -167,9 +165,7 @@ public class mcAccountSpinner extends AppCompatSpinner implements AdapterView.On
     @Override
     public final void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if(position == 0){  // Add account button
-            if(mAccountList.size() > 1){
-                ExtraCore.setValue(ExtraConstants.SELECT_AUTH_METHOD, true);
-            }
+            ExtraCore.setValue(ExtraConstants.SELECT_AUTH_METHOD, true);
             return;
         }
 
@@ -398,8 +394,6 @@ public class mcAccountSpinner extends AppCompatSpinner implements AdapterView.On
             return convertView;
         }
 
-
-
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
@@ -419,7 +413,4 @@ public class mcAccountSpinner extends AppCompatSpinner implements AdapterView.On
                     .show();
         }
     }
-
-
-
 }
